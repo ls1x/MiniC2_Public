@@ -64,8 +64,10 @@ int main(){
         }
     }
 
-    // Closing socket file descriptor (networkSocket)
+    // Cleanup
     close(networkSocket);
+    pclose(processExec);
+    pclose(processRead);
 
     return 0;
 }
